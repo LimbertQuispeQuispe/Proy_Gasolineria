@@ -1,0 +1,41 @@
+# gasolinera/app/templates/operador/add_cliente.html
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">Añadir Nuevo Cliente</h1>
+
+<div class="card p-4">
+    <form method="POST">
+        {{ form.csrf_token }}
+        <div class="mb-3">
+            {{ form.nombre.label(class="form-label") }}
+            {{ form.nombre(class="form-control") }}
+            {% if form.nombre.errors %}
+                <div class="text-danger">
+                    {% for error in form.nombre.errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ form.apellido.label(class="form-label") }}
+            {{ form.apellido(class="form-control") }}
+            {% if form.apellido.errors %}
+                <div class="text-danger">
+                    {% for error in form.apellido.errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ form.nit_ci.label(class="form-label") }}
+            {{ form.nit_ci(class="form-control") }}
+            {% if form.nit_ci.errors %}
+                <div class="text-danger">
+                    {% for error in form.nit_ci.errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('operador.manage_clientes') }}" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

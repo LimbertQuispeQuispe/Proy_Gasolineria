@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">{% if bomba %}Editar Bomba{% else %}Añadir Nueva Bomba{% endif %}</h1>
+
+<div class="card p-4">
+    <form method="POST">
+        {{ form.csrf_token }}
+        <div class="mb-3">
+            {{ form.numero_bomba.label(class="form-label") }}
+            {{ form.numero_bomba(class="form-control") }}
+            {% if form.numero_bomba.errors %}
+                <div class="text-danger">
+                    {% for error in form.numero_bomba.errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ form.tanque_id.label(class="form-label") }}
+            {{ form.tanque_id(class="form-select") }}
+            {% if form.tanque_id.errors %}
+                <div class="text-danger">
+                    {% for error in form.tanque_id.errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('admin.manage_bombas') }}" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+# gasolinera/app/templates/admin/add_edit_tanque.html
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">{% if tanque %}Editar Tanque{% else %}Añadir Nuevo Tanque{% endif %}</h1>
+
+<div class="card p-4">
+    <form method="POST">
+        {{ form.csrf_token }}
+        <div class="mb-3">
+            {{ form.estacion_id.label(class="form-label") }}
+            {{ form.estacion_id(class="form-select") }}
+            {% if form.estacion_id.errors %}
+                <div class="text-danger">
+                    {% for error in form.estacion_id.errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ form.tipo_combustible_id.label(class="form-label") }}
+            {{ form.tipo_combustible_id(class="form-select") }}
+            {% if form.tipo_combustible_id.errors %}
+                <div class="text-danger">
+                    {% for error in form.tipo_combustible_id.errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ form.capacidad_litros.label(class="form-label") }}
+            {{ form.capacidad_litros(class="form-control", type="number", step="0.01") }}
+            {% if form.capacidad_litros.errors %}
+                <div class="text-danger">
+                    {% for error in form.capacidad_litros.errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ form.nivel_actual_litros.label(class="form-label") }}
+            {{ form.nivel_actual_litros(class="form-control", type="number", step="0.01") }}
+            {% if form.nivel_actual_litros.errors %}
+                <div class="text-danger">
+                    {% for error in form.nivel_actual_litros.errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('admin.manage_tanques') }}" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

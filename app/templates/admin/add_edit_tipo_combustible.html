@@ -1,0 +1,32 @@
+# gasolinera/app/templates/admin/add_edit_tipo_combustible.html
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">{% if tipo_combustible %}Editar Tipo de Combustible{% else %}Añadir Nuevo Tipo de Combustible{% endif %}</h1>
+
+<div class="card p-4">
+    <form method="POST">
+        {{ form.csrf_token }}
+        <div class="mb-3">
+            {{ form.nombre.label(class="form-label") }}
+            {{ form.nombre(class="form-control") }}
+            {% if form.nombre.errors %}
+                <div class="text-danger">
+                    {% for error in form.nombre.errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ form.precio_por_litro.label(class="form-label") }}
+            {{ form.precio_por_litro(class="form-control") }}
+            {% if form.precio_por_litro.errors %}
+                <div class="text-danger">
+                    {% for error in form.precio_por_litro.errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('admin.manage_tipos_combustible') }}" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

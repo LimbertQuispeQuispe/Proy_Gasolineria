@@ -1,0 +1,89 @@
+# gasolinera/app/templates/admin/dashboard.html
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">Dashboard de Administración</h1>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card text-center p-3">
+            <div class="card-body">
+                <i class="fas fa-building fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">Estaciones Registradas</h5>
+                <p class="card-text fs-2">{{ num_estaciones }}</p>
+                <a href="{{ url_for('admin.manage_estaciones') }}" class="btn btn-sm btn-outline-primary">Ver Estaciones</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card text-center p-3">
+            <div class="card-body">
+                <i class="fas fa-gas-pump fa-3x text-success mb-3"></i>
+                <h5 class="card-title">Tanques de Combustible</h5>
+                <p class="card-text fs-2">{{ num_tanques }}</p>
+                <a href="{{ url_for('admin.manage_tanques') }}" class="btn btn-sm btn-outline-success">Ver Tanques</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card text-center p-3">
+            <div class="card-body">
+                <i class="fas fa-faucet-drip fa-3x text-info mb-3"></i>
+                <h5 class="card-title">Bombas de Despacho</h5>
+                <p class="card-text fs-2">{{ num_bombas }}</p>
+                <a href="{{ url_for('admin.manage_bombas') }}" class="btn btn-sm btn-outline-info">Ver Bombas</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card text-center p-3">
+            <div class="card-body">
+                <i class="fas fa-flask fa-3x text-warning mb-3"></i>
+                <h5 class="card-title">Tipos de Combustible</h5>
+                <p class="card-text fs-2">{{ num_tipos_combustible }}</p>
+                <a href="{{ url_for('admin.manage_tipos_combustible') }}" class="btn btn-sm btn-outline-warning">Ver Tipos</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card text-center p-3">
+            <div class="card-body">
+                <i class="fas fa-users-cog fa-3x text-danger mb-3"></i>
+                <h5 class="card-title">Usuarios Registrados</h5>
+                <p class="card-text fs-2">{{ num_usuarios }}</p>
+                <a href="{{ url_for('admin.manage_usuarios') }}" class="btn btn-sm btn-outline-danger">Gestionar Usuarios</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card text-center p-3">
+            <div class="card-body">
+                <i class="fas fa-handshake fa-3x text-secondary mb-3"></i>
+                <h5 class="card-title">Clientes Registrados</h5>
+                <p class="card-text fs-2">{{ num_clientes }}</p>
+                <a href="{{ url_for('admin.manage_clientes') }}" class="btn btn-sm btn-outline-secondary">Gestionar Clientes</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card text-center p-3">
+            <div class="card-body">
+                <i class="fas fa-truck-moving fa-3x text-dark mb-3"></i>
+                <h5 class="card-title">Proveedores</h5>
+                <p class="card-text fs-2">{{ num_proveedores }}</p>
+                <a href="{{ url_for('admin.manage_proveedores') }}" class="btn btn-sm btn-outline-dark">Gestionar Proveedores</a>
+            </div>
+        </div>
+    </div>
+     <div class="col-md-4 mb-4">
+        <div class="card text-center p-3">
+            <div class="card-body">
+                <i class="fas fa-chart-line fa-3x text-primary mb-3"></i>
+                <h5 class="card-title">Ver Reportes</h5>
+                <p class="card-text fs-2"><i class="fas fa-file-alt"></i></p>
+                <a href="{{ url_for('admin.view_reports') }}" class="btn btn-sm btn-outline-primary">Ver Todos los Reportes</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

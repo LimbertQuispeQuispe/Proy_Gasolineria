@@ -1,0 +1,32 @@
+# gasolinera/app/templates/admin/add_edit_proveedor.html
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">{% if proveedor %}Editar Proveedor{% else %}Añadir Nuevo Proveedor{% endif %}</h1>
+
+<div class="card p-4">
+    <form method="POST">
+        {{ form.csrf_token }}
+        <div class="mb-3">
+            {{ form.nombre.label(class="form-label") }}
+            {{ form.nombre(class="form-control") }}
+            {% if form.nombre.errors %}
+                <div class="text-danger">
+                    {% for error in form.nombre.errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            {{ form.contacto.label(class="form-label") }}
+            {{ form.contacto(class="form-control") }}
+            {% if form.contacto.errors %}
+                <div class="text-danger">
+                    {% for error in form.contacto.errors %}{{ error }}{% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for('admin.manage_proveedores') }}" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

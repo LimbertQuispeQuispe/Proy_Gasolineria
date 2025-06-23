@@ -1,0 +1,175 @@
+# gasolinera/app/templates/admin/reports.html
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">Reportes de Administración</h1>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card p-3">
+            <h4 class="card-title">Resumen General</h4>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Total Ventas Registradas:</strong> {{ "%.2f" | format(total_ventas) }} Bs.</li>
+                <li class="list-group-item"><strong>Número de Ventas:</strong> {{ ventas | length }}</li>
+                <li class="list-group-item"><strong>Número de Reabastecimientos:</strong> {{ reabastecimientos | length }}</li>
+                <li class="list-group-item"><strong>Número de Alertas:</strong> {{ alertas | length }}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card p-3">
+            <h4 class="card-title">Nivel Actual de Tanques</h4>
+            <div class="table-responsive">
+                <table class="table table-sm table-striped">
+                    <thead>
+                        <tr>
+                            <th>Tanque ID</th>
+                            <th>Estación</th>
+                            <th>Combustible</th>
+                            <th>Nivel (L)</th>
+                            <th>Capacidad (L)</th>
+                            <th>%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tanque in tanques %}
+                        <tr>
+                            <td>{{ tanque.id }}</td>
+                            <td>{{ tanque.estacion.nombre }}</td>
+                            <td>{{ tanque.tipo_combustible.nombre }}</td>
+                            <td>{{ "%.2f" | format(tanque.nivel_actual_litros) }}</td>
+                            <td>{{ "%.2f" | format(tanque.capacidad_litros) }}</td>
+                            <td>{{ "%.2f" | format((tanque.nivel_actual_litros / tanque.capacidad_litros) * 100) }}%</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3 class="mt-5 mb-3">Historial de Ventas</h3>
+{% if ventas %}
+<div class="table-responsive mb-4">
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>ID Venta</th>
+                <th>Fecha y Hora</th>
+                <th>Litros</th>
+                <th>Total (Bs.)</th>
+                <th>Bomba</th>
+                <th>Cliente</th>
+                <th>Método de Pago</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for venta in ventas %}
+            <tr>
+                <td>{{ venta.id }}</td>
+                <td>{{ venta.fecha_hora.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ "%.2f" | format(venta.litros_vendidos) }}</td>
+                <td>{{ "%.2f" | format(venta.total_pagado) }}</td>
+                <td>
+                  {{ venta.bomba.numero_bomba if venta.bomba else 'Sin bomba' }}
+                  (Estación: {{ venta.bomba.tanque.estacion.nombre if venta.bomba and venta.bomba.tanque and venta.bomba.tanque.estacion else 'Sin estación' }})
+                </td>
+                <td>{{ venta.cliente.nombre if venta.cliente else 'Público General' }}</td>
+                <td>{{ venta.pago.metodo_pago if venta.pago else 'N/A' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info" role="alert">
+    No hay ventas registradas.
+</div>
+{% endif %}
+
+<h3 class="mt-5 mb-3">Historial de Reabastecimientos</h3>
+{% if reabastecimientos %}
+<div class="table-responsive mb-4">
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>ID Reab.</th>
+                <th>Fecha y Hora</th>
+                <th>Litros Reab.</th>
+                <th>Costo Total (Bs.)</th>
+                <th>Tanque</th>
+                <th>Proveedor</th>
+                <th>Estación</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reab in reabastecimientos %}
+            <tr>
+                <td>{{ reab.id }}</td>
+                <td>{{ reab.fecha_hora.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ "%.2f" | format(reab.litros_reabastecidos) }}</td>
+                <td>{{ "%.2f" | format(reab.costo_total) }}</td>
+                <td>{{ reab.tanque.id }} ({{ reab.tanque.tipo_combustible.nombre }})</td>
+                <td>{{ reab.proveedor.nombre }}</td>
+                <td>{{ reab.estacion.nombre }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info" role="alert">
+    No hay reabastecimientos registrados.
+</div>
+{% endif %}
+
+<h3 class="mt-5 mb-3">Reportes de Alerta</h3>
+{% if alertas %}
+<div class="table-responsive mb-4">
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>ID Alerta</th>
+                <th>Fecha y Hora</th>
+                <th>Tipo de Alerta</th>
+                <th>Mensaje</th> {# Esta es la columna del mensaje #}
+                <th>Tanque</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for alerta in alertas %}
+            <tr>
+                <td>{{ alerta.id }}</td>
+                <td>{{ alerta.fecha_hora.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ alerta.tipo_alerta }}</td>
+                <td>{{ alerta.mensaje | safe }}</td>
+                <td>{{ alerta.tanque.id }} ({{ alerta.tanque.estacion.nombre }} - {{ alerta.tanque.tipo_combustible.nombre }})</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info" role="alert">
+    No hay alertas registradas.
+</div>
+{% endif %}
+
+<div class="d-flex gap-2 mt-3">
+    <a href="{{ url_for('admin.exportar_reportes_pdf') }}" class="btn btn-danger flex-fill">Exportar PDF</a>
+    <form method="POST" action="{{ url_for('admin.eliminar_historial') }}" style="margin: 0; flex: 1;">
+        <button type="submit" class="btn btn-warning w-100"
+            onclick="return confirm('¿Seguro que deseas eliminar TODO el historial? Esta acción no se puede deshacer.')">
+            Eliminar Historial
+        </button>
+    </form>
+    <form method="POST" action="{{ url_for('admin.eliminar_reportes') }}" style="margin: 0; flex: 1;">
+        <button type="submit" class="btn btn-danger w-100"
+            onclick="return confirm('¿Seguro que deseas eliminar TODOS los reportes? Esta acción no se puede deshacer.')">
+            Eliminar Reportes
+        </button>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,111 @@
+{# gasolinera/app/templates/cliente/dashboard.html #}
+
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4 text-center">Dashboard de Cliente</h1>
+
+{% if cliente_asociado %}
+<div class="card p-3 mb-4 text-center">
+    <h4 class="card-title">Bienvenido, {{ cliente_asociado.nombre }} {{ cliente_asociado.apellido }}!</h4>
+    <p class="text-muted">Aquí puedes ver un resumen de tus actividades y el estado actual de las gasolineras.</p>
+</div>
+
+{# --- SECCIÓN DE ÚLTIMAS COMPRAS EN TARJETAS --- #}
+<h3 class="mt-5 mb-3 text-center">Mis Últimas Compras</h3>
+{% if ventas_cliente %}
+<div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center mb-4">
+    {% for venta in ventas_cliente %}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0 rounded-4 p-3">
+            <div class="card-body text-center">
+                <i class="fas fa-gas-pump fa-2x text-primary mb-3"></i>
+                <h5 class="card-title text-success mb-1">{{ "%.2f" | format(venta.litros_vendidos) }} Litros</h5>
+                <p class="card-text text-muted mb-2">Total: <strong>{{ "%.2f" | format(venta.total_pagado) }} Bs.</strong></p>
+                <p class="card-text text-sm">Bomba #{{ venta.bomba.numero_bomba }}<br>
+                <small class="text-muted">{{ venta.fecha_hora.strftime('%d/%m/%Y %H:%M') }}</small></p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info text-center" role="alert">
+    No has realizado compras registradas aún.
+</div>
+{% endif %}
+
+{# --- BOTÓN DE HISTORIAL CENTRADO --- #}
+<div class="d-flex justify-content-center mb-5">
+    <a href="{{ url_for('cliente.historial_compras') }}" class="btn btn-primary btn-lg rounded-pill px-4 shadow">
+        <i class="fas fa-history me-2"></i>Ver Historial Completo
+    </a>
+</div>
+
+
+{# --- SECCIÓN: Estado de Estaciones y Bombas con diseño de tarjeta individual --- #}
+<h3 class="mt-5 mb-4 text-center">Disponibilidad en Estaciones</h3>
+{% if estaciones_info %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"> {# Responsive grid for stations #}
+        {% for estacion in estaciones_info %}
+        <div class="col">
+            <div class="card h-100 shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-gradient-primary text-white py-3">
+                    <h4 class="mb-0 text-center"><i class="fas fa-map-marker-alt me-2"></i>{{ estacion.nombre }}</h4>
+                    <p class="text-center mb-0"><small>{{ estacion.direccion }}</small></p>
+                </div>
+                <div class="card-body p-4">
+                    {% if estacion.bombas %}
+                        {% for bomba in estacion.bombas %}
+                        <div class="d-flex align-items-center mb-3 p-3 border rounded-3 bg-light shadow-sm">
+                            <i class="fas fa-faucet-drip fa-lg me-3 text-secondary"></i>
+                            <div class="flex-grow-1">
+                                <h6 class="mb-0">Bomba #{{ bomba.numero_bomba }}</h6>
+                                <small class="text-muted">{{ bomba.tipo_combustible }}</small>
+                            </div>
+                            <div>
+                                {% if bomba.estado_combustible == 'Disponible' %}
+                                    <span class="badge bg-success py-2 px-3 rounded-pill">
+                                        <i class="fas fa-check-circle me-1"></i>Disponible
+                                    </span>
+                                {% elif bomba.estado_combustible == 'Nivel Bajo' %}
+                                    <span class="badge bg-warning text-dark py-2 px-3 rounded-pill">
+                                        <i class="fas fa-exclamation-triangle me-1"></i>Nivel Bajo
+                                    </span>
+                                {% elif bomba.estado_combustible == 'Agotado' %}
+                                    <span class="badge bg-danger py-2 px-3 rounded-pill">
+                                        <i class="fas fa-times-circle me-1"></i>Agotado
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-secondary py-2 px-3 rounded-pill">
+                                        <i class="fas fa-question-circle me-1"></i>{{ bomba.estado_combustible }}
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                    <div class="alert alert-info text-center" role="alert">
+                        No hay bombas registradas para esta estación.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+<div class="alert alert-info text-center" role="alert">
+    No hay información de estaciones y bombas disponible.
+</div>
+{% endif %}
+{# --- FIN SECCIÓN --- #}
+
+
+{% else %}
+<div class="alert alert-warning text-center" role="alert">
+    Tu cuenta de usuario no está asociada a un perfil de cliente. Por favor, contacta al administrador.
+</div>
+{% endif %}
+
+{% endblock %}

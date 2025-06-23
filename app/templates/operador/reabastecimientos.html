@@ -1,0 +1,43 @@
+# gasolinera/app/templates/operador/reabastecimientos.html
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="mb-4">Historial de Reabastecimientos</h1>
+
+<a href="{{ url_for('operador.add_reabastecimiento') }}" class="btn btn-primary mb-3"><i class="fas fa-plus-circle me-2"></i>Registrar Nuevo Reabastecimiento</a>
+
+{% if reabastecimientos %}
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">ID Reab.</th>
+                <th scope="col">Fecha y Hora</th>
+                <th scope="col">Litros Reabastecidos</th>
+                <th scope="col">Costo Total (Bs.)</th>
+                <th scope="col">Tanque</th>
+                <th scope="col">Proveedor</th>
+                <th scope="col">Estación</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reab in reabastecimientos %}
+            <tr>
+                <th scope="row">{{ reab.id }}</th>
+                <td>{{ reab.fecha_hora.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>{{ "%.2f" | format(reab.litros_reabastecidos) }}</td>
+                <td>{{ "%.2f" | format(reab.costo_total) }}</td>
+                <td>{{ reab.tanque.id }} ({{ reab.tanque.tipo_combustible.nombre }})</td>
+                <td>{{ reab.proveedor.nombre }}</td>
+                <td>{{ reab.estacion.nombre }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info" role="alert">
+    No hay reabastecimientos registrados aún.
+</div>
+{% endif %}
+{% endblock %}
