@@ -1,26 +1,19 @@
 FROM python:3.12-slim
 
-# Instalar dependencias del sistema necesarias para WeasyPrint
+# Instalar dependencias de sistema para WeasyPrint
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpango-1.0-0 \
     libcairo2 \
+    libpango-1.0-0 \
+    libpangocairo-1.0-0 \
     libgdk-pixbuf2.0-0 \
     libffi-dev \
-    libglib2.0-0 \
-    && apt-get clean
+    libjpeg-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Crear carpeta de trabajo
+# Copiar código y demás pasos
 WORKDIR /app
+COPY . /app
 
-# Copiar archivos del proyecto
-COPY . .
+RUN pip install -r requirements.txt
 
-# Instalar dependencias de Python
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Puerto que usará la app
-EXPOSE 8000
-
-# Comando para iniciar la app Flask con Gunicorn
-CMD ["gunicorn", "run:app", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "run:app"]
