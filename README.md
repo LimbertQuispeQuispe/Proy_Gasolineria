@@ -1,4 +1,4 @@
-# Gasolina App
+# Proy gasolineria
 
 Aplicación web para la gestión de ventas de gasolina con autenticación y roles, desarrollada con Flask.
 
@@ -22,7 +22,7 @@ Aplicación web para la gestión de ventas de gasolina con autenticación y role
 1. Clona o descomprime este repositorio.
 2. Abre la carpeta en Visual Studio Code o tu terminal favorita.
 3. Crea y activa un entorno virtual:
-
+4. es opcional ...igual puede trabajr en entorno global si no le corre en entorno virtual
 ```bash
 python -m venv venv
 # Linux/Mac
@@ -32,6 +32,7 @@ venv\Scripts\activate
 ```
 
 4. Instala las dependencias:
+en caso de que no instale ..instalar en global y no en entorno virtual
 
 ```bash
 pip install -r requirements.txt
