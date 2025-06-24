@@ -1,6 +1,5 @@
 # Proy gasolineria
 
-Aplicación web para la gestión de ventas de gasolina con autenticación y roles, desarrollada con Flask.
 
 ## Características
 
@@ -9,11 +8,11 @@ Aplicación web para la gestión de ventas de gasolina con autenticación y role
 - Base de datos con tablas relacionales
 - Formularios con WTForms
 - Plantillas con Bootstrap
-- Modularización con Blueprints
+- Modularización con gtk3 runtime
 - Entre otros mas
 
 ## Requisitos
-
+-GTK3 runtime 3.24.21
 - Python 3.8 o superior
 - pip
 
@@ -25,8 +24,6 @@ Aplicación web para la gestión de ventas de gasolina con autenticación y role
 4. es opcional ...igual puede trabajr en entorno global si no le corre en entorno virtual
 ```bash
 python -m venv venv
-# Linux/Mac
-source venv/bin/activate
 # Windows
 venv\Scripts\activate
 ```
@@ -44,7 +41,7 @@ pip install -r requirements.txt
 ```bash
 python run.py
 ```
-
+6. en caso de que no corra verifica el JGTK3 runtime 3.24.21
 Accede desde tu navegador a `http://localhost:5000`.
 
 ## Usuarios de prueba
